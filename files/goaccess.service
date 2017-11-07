@@ -1,0 +1,10 @@
+[Unit]
+Description=Goaccess
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/goaccess /var/log/apache2/access.log -o /var/www/html/report/index.html --real-time-html
+
+[Install]
+WantedBy=multi-user.target

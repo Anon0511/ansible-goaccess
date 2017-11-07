@@ -11,7 +11,7 @@ Apache2
 Role Variables
 --------------
 
-Edit the systemd-service file. Change source, target.
+Edit the systemd-service file. Change source and target file (access.log and output html file) to your liking.
 
 Dependencies
 ------------

@@ -12,9 +12,13 @@ Role Variables
 --------------
 
 https://goaccess.io/
+
 Edit the systemd-service file. Change source and target file (access.log and output html file) to your liking.
+
 Standard is /var/log/apache2/access.log and output is /var/www/html/report/index.html so you can simply call http://HOST/report to see the dashboard.
+
 Edit the config for time and date format and VHost if needed. 
+
 The current standard is time: H M S, date: d b Y and no VHost.
 
 Dependencies

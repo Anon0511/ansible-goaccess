@@ -34,6 +34,13 @@
         state: latest
 
   - copy:
+      src: files/goaccess.conf
+      dest: /etc/goaccess.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - copy:
       src: files/goaccess.service
       dest: /etc/systemd/systemd/goaccess.service
       owner: root

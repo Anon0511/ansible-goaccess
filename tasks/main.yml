@@ -17,6 +17,14 @@
 
   - apt_repository: repo='deb http://deb.goaccess.io/ {{ lsb_release.stdout }} main' state=present filename='goaccess'
 
+  - name: Creates directory
+      file:
+      path: /var/www/html/report
+      state: directory
+      owner: www-data
+      group: www-data
+       mode: 0775
+
   - name: Install the package goaccess
     apt: name=goaccess state=latest update_cache=yes
 

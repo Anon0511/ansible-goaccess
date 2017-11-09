@@ -1,37 +1,24 @@
 ---
- 
-  - name: Update repositories cache
-      apt: update_cache: yes
-
+  - name: register lsb release
+    command: lsb_release -cs
+    register: lsb_release
+  
   - name: Install the dependencies
-      apt:
-        name: {{item}}
-        state: latest
-        install_recommends: yes
-      with_items:
-           - libgeoip-dev
-           - libncursesw5-dev
-           - libtokyocabinet-dev
-           - libssl-dev
-           - apt-transport-https
-
-  - apt_repository:
-      repo: deb http://deb.goaccess.io/ $(lsb_release -cs) main
-      state: present
-      filename: 'goaccess'
+    apt: name={{ item }}  state=latest install_recommends=yes update_cache=yes
+    with_items:
+      - libgeoip-dev
+      - libncursesw5-dev
+      - libtokyocabinet-dev
+      - libssl-dev
+      - apt-transport-https
 
   - name: Add an Apt signing key, uses whichever key is at the URL
-    apt_key:
-      url: https://deb.goaccess.io/gnugpg.key
-      state: present
+    apt_key: url=https://deb.goaccess.io/gnugpg.key state=present
 
-  - name: update cache
-      apt: update_cache=yes
+  - apt_repository: repo='deb http://deb.goaccess.io/ {{ lsb_release.stdout }} main' state=present filename='goaccess'
 
   - name: Install the package goaccess
-      apt:
-        name: goaccess
-        state: latest
+    apt: name=goaccess state=latest update_cache=yes
 
   - copy:
       src: files/goaccess.conf
@@ -42,14 +29,14 @@
 
   - copy:
       src: files/goaccess.service
-      dest: /etc/systemd/systemd/goaccess.service
+      dest: /etc/systemd/system/goaccess.service
       owner: root
       group: root
       mode: 0644
 
- - name: enable service goaccess and start
-   systemd:
-     name: goaccess
-     daemon_reload: yes
-     enabled: yes
-     state: started
+  - name: enable service goaccess and start
+    systemd:
+      name: goaccess
+      daemon_reload: yes
+      enabled: yes
+      state: started
